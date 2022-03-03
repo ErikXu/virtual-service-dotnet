@@ -32,4 +32,7 @@
     <PackageReference Include="KubeOps" Version="6.0.18" />
   </ItemGroup>
 
+  <ItemGroup>
+    <RuntimeHostConfigurationOption Include="System.Globalization.Invariant" Value="true" />
+  </ItemGroup>
 </Project>
