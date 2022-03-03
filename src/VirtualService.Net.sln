@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualService.Net", "VirtualService.Net\VirtualService.Net.csproj", "{0551895C-FEA0-4073-B0EB-22887D03AD95}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0551895C-FEA0-4073-B0EB-22887D03AD95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0551895C-FEA0-4073-B0EB-22887D03AD95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0551895C-FEA0-4073-B0EB-22887D03AD95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0551895C-FEA0-4073-B0EB-22887D03AD95}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {97B6B8AC-5EDE-46CD-B210-D7F3680392E7}
+	EndGlobalSection
+EndGlobal
