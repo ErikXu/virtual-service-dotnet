@@ -9,7 +9,15 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <KubeOpsSkipInstaller>true</KubeOpsSkipInstaller>
+    <KubeOpsSkipDockerfile>true</KubeOpsSkipDockerfile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <KubeOpsSkipCrds>true</KubeOpsSkipCrds>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <KubeOpsSkipRbac>true</KubeOpsSkipRbac>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -17,7 +25,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <KubeOpsSkipDockerfile>true</KubeOpsSkipDockerfile>
+    <KubeOpsSkipInstaller>true</KubeOpsSkipInstaller>
   </PropertyGroup>
 
   <ItemGroup>

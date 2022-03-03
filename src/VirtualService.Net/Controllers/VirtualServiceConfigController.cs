@@ -3,7 +3,6 @@ using KubeOps.Operator.Controller;
 using KubeOps.Operator.Controller.Results;
 using KubeOps.Operator.Rbac;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 using VirtualService.Net.Entities;
 
