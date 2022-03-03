@@ -8,6 +8,8 @@ spec:
     kind: VirtualServiceConfig
     listKind: VirtualServiceConfigList
     plural: virtualserviceconfigs
+    shortNames:
+    - vsc
     singular: virtualserviceconfig
   scope: Namespaced
   versions:
@@ -16,16 +18,60 @@ spec:
       openAPIV3Schema:
         properties:
           status:
-            description: Status object for the entity.
+            description: This is the VirtualServiceConfigStatus Description
             properties:
               status:
                 type: string
             type: object
           spec:
-            description: Specification of the kubernetes object.
+            description: This is the VirtualServiceConfigSpec Description
             properties:
+              virtualServiceName:
+                type: string
               host:
                 type: string
+              http:
+                items:
+                  properties:
+                    name:
+                      type: string
+                    match:
+                      properties:
+                        name:
+                          type: string
+                        uri:
+                          properties:
+                            exact:
+                              type: string
+                            prefix:
+                              type: string
+                            regex:
+                              type: string
+                          type: object
+                        headers:
+                          additionalProperties:
+                            properties:
+                              exact:
+                                type: string
+                              prefix:
+                                type: string
+                              regex:
+                                type: string
+                            type: object
+                          type: object
+                      type: object
+                    route:
+                      properties:
+                        host:
+                          type: string
+                        subset:
+                          type: string
+                      type: object
+                  type: object
+                type: array
+            required:
+            - virtualServiceName
+            - host
             type: object
         type: object
     served: true
