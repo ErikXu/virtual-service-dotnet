@@ -5,6 +5,7 @@ using KubeOps.Operator.Rbac;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using VirtualService.Net.Entities;
+using Newtonsoft.Json;
 
 namespace VirtualService.Net.Controllers
 {
@@ -21,6 +22,9 @@ namespace VirtualService.Net.Controllers
         public Task<ResourceControllerResult?> ReconcileAsync(VirtualServiceConfig entity)
         {
             _logger.LogInformation($"entity {entity.Name()} called {nameof(ReconcileAsync)}.");
+
+            var json = JsonConvert.SerializeObject(entity);
+            _logger.LogInformation($"json {json}");
 
             return Task.FromResult<ResourceControllerResult?>(null);
         }

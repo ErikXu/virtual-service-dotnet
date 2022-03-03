@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <PackageReference Include="KubeOps" Version="6.2.13" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
