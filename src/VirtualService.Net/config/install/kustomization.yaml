@@ -1,5 +1,5 @@
-namespace: istio-system
-namePrefix: istio-
+namespace: vs-conf-system
+namePrefix: vs-conf-
 commonLabels:
   operator: vs-conf-operator
 resources:
