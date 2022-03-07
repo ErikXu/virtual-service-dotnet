@@ -12,6 +12,7 @@ using VirtualService.Net.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 using k8s;
+using Microsoft.Rest;
 
 namespace VirtualService.Net.Controllers
 {
@@ -102,12 +103,32 @@ namespace VirtualService.Net.Controllers
 
             var k8sConfig = KubernetesClientConfiguration.InClusterConfig();
             IKubernetes client = new Kubernetes(k8sConfig);
-            client.PatchNamespacedCustomObject(new V1Patch(virtualService, V1Patch.PatchType.ApplyPatch),
-                                               VirtualServiceStatic.Group,
-                                               VirtualServiceStatic.Version,
-                                               virtualService.Metadata.Namespace,
-                                               VirtualServiceStatic.Plural,
-                                               virtualService.Metadata.Name);
+            try
+            {
+                client.PatchNamespacedCustomObject(new V1Patch(virtualService, V1Patch.PatchType.ApplyPatch),
+                                   VirtualServiceStatic.Group,
+                                   VirtualServiceStatic.Version,
+                                   virtualService.Metadata.Namespace,
+                                   VirtualServiceStatic.Plural,
+                                   virtualService.Metadata.Name,
+                                   null,
+                                   "application/apply-patch");
+            }
+            catch (HttpOperationException ex)
+            {
+                _logger.LogError($"Message:{ex.Message}");
+                _logger.LogError($"Response Content:{ex.Response.Content}");
+
+                _logger.LogError($"Request RequestUri:{ex.Request.RequestUri}");
+                _logger.LogError("Request Headers:");
+                foreach (var h in ex.Request.Headers)
+                {
+                    _logger.LogError($"{h.Key}:{h.Value.First()}");
+                }
+                
+                _logger.LogError($"Request Content:{ex.Request.Content}");
+            }
+
             return null;
         }
 
