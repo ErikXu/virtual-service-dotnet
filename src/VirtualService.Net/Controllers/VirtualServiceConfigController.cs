@@ -94,6 +94,8 @@ namespace VirtualService.Net.Controllers
                         }
                     };
 
+                    http.Route.Add(route);
+
                     virtualService.Spec.Http.Add(http);
                 }
             }
