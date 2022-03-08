@@ -16,9 +16,9 @@ An operator to deal with the priority of istio virtual service by watching the v
 
 ## Installation
 
-- Build and Pack
+- Build and pack
 
-  - Enter [src](src) directory
+  - Enter the [src](src) directory
   
   - Using `bash build.sh` to build the application
   
@@ -28,9 +28,13 @@ An operator to deal with the priority of istio virtual service by watching the v
 
 - Install crd and operator
 
-  - Enter [config](src/VirtualService.Net/config) directory
+  - Enter the [config](src/VirtualService.Net/config) directory
 
   - With your cluster `kubeconfig`, running `kubectl apply -k install/` to install crd and operator
 
   If you are using your own docker registry, please modify the image info of [deployment.yaml](src/VirtualService.Net/config/operator/deployment.yaml) before running `kubectl apply -k install/`.
+
+## Examples
+
+Please enter the [example](example) directory, and using `kubectl apply -f xxx.yaml` to easily start an example. And you can use `kubectl delete -f xxx.yaml` to cleanup the example.
 
