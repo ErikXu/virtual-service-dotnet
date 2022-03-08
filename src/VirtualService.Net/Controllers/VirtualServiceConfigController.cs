@@ -60,49 +60,49 @@ namespace VirtualService.Net.Controllers
                 }
             };
 
-            foreach (var config in configs)
+            var specHttps = configs.SelectMany(n => n.Spec.Http).OrderByDescending(n => n.Order).ThenByDescending(n => n.Match.Headers.Count).ToList();
+
+            foreach (var specHttp in specHttps)
             {
-                foreach (var h in config.Spec.Http)
+                var http = new Http
                 {
-                    var http = new Http
-                    {
-                        Match = new List<Match>(),
-                        Route = new List<Route>()
-                    };
+                    Match = new List<Match>(),
+                    Route = new List<Route>()
+                };
 
-                    var match = new Match
-                    {
-                        Uri = StringMatchToDic(h.Match.Uri)
-                    };
+                var match = new Match
+                {
+                    Uri = StringMatchToDic(specHttp.Match.Uri)
+                };
 
-                    if (h.Match.Headers != null && h.Match.Headers.Count > 0)
+                if (specHttp.Match.Headers != null && specHttp.Match.Headers.Count > 0)
+                {
+                    match.Headers = new Dictionary<string, Dictionary<string, string>>();
+                    foreach (var header in specHttp.Match.Headers)
                     {
-                        match.Headers = new Dictionary<string, Dictionary<string, string>>();
-                        foreach (var header in h.Match.Headers)
-                        {
-                            match.Headers[header.Key] = StringMatchToDic(header.Value);
-                        }
+                        match.Headers[header.Key] = StringMatchToDic(header.Value);
                     }
-
-                    http.Match.Add(match);
-
-                    var route = new Route
-                    {
-                        Destination = new Destination
-                        {
-                            Host = h.Route.Host,
-                            Subset = !string.IsNullOrEmpty(h.Route.Subset) ? h.Route.Subset : null
-                        }
-                    };
-
-                    http.Route.Add(route);
-
-                    virtualService.Spec.Http.Add(http);
                 }
+
+                http.Match.Add(match);
+
+                var route = new Route
+                {
+                    Destination = new Destination
+                    {
+                        Host = specHttp.Route.Host,
+                        Subset = !string.IsNullOrEmpty(specHttp.Route.Subset) ? specHttp.Route.Subset : null
+                    }
+                };
+
+                http.Route.Add(route);
+
+                virtualService.Spec.Http.Add(http);
             }
 
             var k8sConfig = KubernetesClientConfiguration.InClusterConfig();
             IKubernetes client = new Kubernetes(k8sConfig);
+
             try
             {
                 client.PatchNamespacedCustomObject(new V1Patch(virtualService, V1Patch.PatchType.ApplyPatch),
@@ -125,7 +125,7 @@ namespace VirtualService.Net.Controllers
                 {
                     _logger.LogError($"{h.Key}:{h.Value.First()}");
                 }
-                
+
                 _logger.LogError($"Request Content:{ex.Request.Content}");
             }
 

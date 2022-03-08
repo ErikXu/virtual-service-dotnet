@@ -34,6 +34,8 @@ namespace VirtualService.Net.Entities
     {
         public string Name { get; set; } = string.Empty;
 
+        public int Order { get; set; } = 0;
+
         public HttpMatchRequest Match { get; set; } = new HttpMatchRequest();
 
         public HttpRouteDestination Route { get; set; } = new HttpRouteDestination();

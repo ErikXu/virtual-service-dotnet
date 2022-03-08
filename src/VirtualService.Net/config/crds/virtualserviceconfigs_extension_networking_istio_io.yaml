@@ -35,6 +35,9 @@ spec:
                   properties:
                     name:
                       type: string
+                    order:
+                      format: int32
+                      type: integer
                     match:
                       properties:
                         name:
