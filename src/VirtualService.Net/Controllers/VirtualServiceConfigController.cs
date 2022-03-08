@@ -62,6 +62,7 @@ namespace VirtualService.Net.Controllers
 
             var specHttps = configs.SelectMany(n => n.Spec.Http)
                                    .OrderByDescending(n => n.Order)
+                                   .OrderByDescending(n => StringMatchToUri(n.Match.Uri).Length)
                                    .ThenByDescending(n => n.Match.Headers.Count).ToList();
 
             foreach (var specHttp in specHttps)
@@ -178,6 +179,20 @@ namespace VirtualService.Net.Controllers
             }
 
             return new Dictionary<string, string> { { "regex", match.Regex } };
+        }
+
+        private string StringMatchToUri(StringMatch match)
+        {
+            if (!string.IsNullOrEmpty(match.Exact))
+            {
+                return match.Exact;
+            }
+            if (!string.IsNullOrEmpty(match.Prefix))
+            {
+                return match.Prefix;
+            }
+
+            return match.Regex;
         }
     }
 }
