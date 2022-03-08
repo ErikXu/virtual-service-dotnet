@@ -41,20 +41,66 @@ namespace VirtualService.Net.Controllers
 
             configs.Add(entity);
 
+            await GenerateVirtualService(entity.Spec.VirtualServiceName, entity.Namespace(), entity.Spec.Host, configs);
+
+            return null;
+        }
+
+        public Task StatusModifiedAsync(VirtualServiceConfig entity)
+        {
+            _logger.LogInformation($"[{entity.Namespace()}/{entity.Name()}] status modified.");
+
+            return Task.CompletedTask;
+        }
+
+        public async Task DeletedAsync(VirtualServiceConfig entity)
+        {
+            _logger.LogInformation($"[{entity.Namespace()}/{entity.Name()}] deleted.");
+
+            var configs = await _client.List<VirtualServiceConfig>(entity.Namespace());
+            var preConfig = configs.FirstOrDefault(n => n.Name() == entity.Name());
+            if (preConfig != null)
+            {
+                configs.Remove(preConfig);
+            }
+
+            if (configs.Count > 0)
+            {
+                await GenerateVirtualService(entity.Spec.VirtualServiceName, entity.Namespace(), entity.Spec.Host, configs);
+            }
+            else
+            {
+                await DeleteVirtualService(entity.Namespace(), entity.Spec.VirtualServiceName);
+            }
+        }
+
+        private async Task GenerateVirtualService(string virtualServiceName, string @namespace, string host, IList<VirtualServiceConfig> configs)
+        {
+            var virtualService = ConfigsToVirtualService(virtualServiceName, @namespace, host, configs);
+
+            var yaml = VirtualServiceToYaml(virtualService);
+            _logger.LogInformation("Generated yaml:");
+            _logger.LogInformation(yaml);
+
+            await ApplyVirtualService(virtualService);
+        }
+
+        private Entities.VirtualService ConfigsToVirtualService(string virtualServiceName, string @namespace, string host, IList<VirtualServiceConfig> configs)
+        {
             var virtualService = new Entities.VirtualService
             {
                 ApiVersion = VirtualServiceStatic.ApiVersion,
                 Kind = VirtualServiceStatic.Kind,
                 Metadata = new Metadata
                 {
-                    Name = entity.Spec.VirtualServiceName,
-                    Namespace = entity.Namespace()
+                    Name = virtualServiceName,
+                    Namespace = @namespace
                 },
                 Spec = new Spec
                 {
                     Hosts = new List<string>
                     {
-                        entity.Spec.Host
+                        host
                     },
                     Http = new List<Http>()
                 }
@@ -105,23 +151,24 @@ namespace VirtualService.Net.Controllers
                 virtualService.Spec.Http.Add(http);
             }
 
-            var yaml = VirtualServiceToYaml(virtualService);
-            _logger.LogInformation("Generated yaml:");
-            _logger.LogInformation(yaml);
+            return virtualService;
+        }
 
-            var k8sConfig = KubernetesClientConfiguration.InClusterConfig();
-            IKubernetes client = new Kubernetes(k8sConfig);
+        private async Task ApplyVirtualService(Entities.VirtualService virtualService)
+        {
+            var config = KubernetesClientConfiguration.InClusterConfig();
+            IKubernetes client = new Kubernetes(config);
 
             try
             {
-                client.PatchNamespacedCustomObject(new V1Patch(virtualService, V1Patch.PatchType.ApplyPatch),
-                                   VirtualServiceStatic.Group,
-                                   VirtualServiceStatic.Version,
-                                   virtualService.Metadata.Namespace,
-                                   VirtualServiceStatic.Plural,
-                                   virtualService.Metadata.Name,
-                                   null,
-                                   "application/apply-patch");
+                await client.PatchNamespacedCustomObjectAsync(new V1Patch(virtualService, V1Patch.PatchType.ApplyPatch),
+                                                              VirtualServiceStatic.Group,
+                                                              VirtualServiceStatic.Version,
+                                                              virtualService.Metadata.Namespace,
+                                                              VirtualServiceStatic.Plural,
+                                                              virtualService.Metadata.Name,
+                                                              null,
+                                                              "application/apply-patch");
             }
             catch (HttpOperationException ex)
             {
@@ -129,6 +176,7 @@ namespace VirtualService.Net.Controllers
                 _logger.LogError($"Response Content:{ex.Response.Content}");
 
                 _logger.LogError($"Request RequestUri:{ex.Request.RequestUri}");
+                _logger.LogError($"Request Method:{ex.Request.Method}");
                 _logger.LogError("Request Headers:");
                 foreach (var h in ex.Request.Headers)
                 {
@@ -137,22 +185,36 @@ namespace VirtualService.Net.Controllers
 
                 _logger.LogError($"Request Content:{ex.Request.Content}");
             }
-
-            return null;
         }
 
-        public Task StatusModifiedAsync(VirtualServiceConfig entity)
+        private async Task DeleteVirtualService(string @namespace, string name)
         {
-            _logger.LogInformation($"entity {entity.Name()} called {nameof(StatusModifiedAsync)}.");
+            var config = KubernetesClientConfiguration.InClusterConfig();
+            IKubernetes client = new Kubernetes(config);
 
-            return Task.CompletedTask;
-        }
+            try
+            {
+                await client.DeleteNamespacedCustomObjectAsync(VirtualServiceStatic.Group,
+                                                               VirtualServiceStatic.Version,
+                                                               @namespace,
+                                                               VirtualServiceStatic.Plural,
+                                                               name);
+            }
+            catch (HttpOperationException ex)
+            {
+                _logger.LogError($"Message:{ex.Message}");
+                _logger.LogError($"Response Content:{ex.Response.Content}");
 
-        public Task DeletedAsync(VirtualServiceConfig entity)
-        {
-            _logger.LogInformation($"entity {entity.Name()} called {nameof(DeletedAsync)}.");
+                _logger.LogError($"Request RequestUri:{ex.Request.RequestUri}");
+                _logger.LogError($"Request Method:{ex.Request.Method}");
+                _logger.LogError("Request Headers:");
+                foreach (var h in ex.Request.Headers)
+                {
+                    _logger.LogError($"{h.Key}:{h.Value.First()}");
+                }
 
-            return Task.CompletedTask;
+                _logger.LogError($"Request Content:{ex.Request.Content}");
+            }
         }
 
         private string VirtualServiceToYaml(Entities.VirtualService virtualService)
