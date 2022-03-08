@@ -60,7 +60,9 @@ namespace VirtualService.Net.Controllers
                 }
             };
 
-            var specHttps = configs.SelectMany(n => n.Spec.Http).OrderByDescending(n => n.Order).ThenByDescending(n => n.Match.Headers.Count).ToList();
+            var specHttps = configs.SelectMany(n => n.Spec.Http)
+                                   .OrderByDescending(n => n.Order)
+                                   .ThenByDescending(n => n.Match.Headers.Count).ToList();
 
             foreach (var specHttp in specHttps)
             {

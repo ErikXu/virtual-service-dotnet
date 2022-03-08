@@ -29,6 +29,8 @@ namespace VirtualService.Net.Entities
 
     public class Http
     {
+        public string? Name { get; set; } = null;
+
         public List<Match> Match { get; set; } = new List<Match>();
 
         public List<Route> Route { get; set; } = new List<Route>();
@@ -36,6 +38,8 @@ namespace VirtualService.Net.Entities
 
     public class Match
     {
+        public string? Name { get; set; } = null;
+
         public Dictionary<string, string> Uri { get; set; } = new Dictionary<string, string>();
 
         public Dictionary<string, Dictionary<string, string>>? Headers { get; set; } = null;

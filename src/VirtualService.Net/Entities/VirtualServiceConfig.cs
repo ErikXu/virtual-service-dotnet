@@ -32,7 +32,7 @@ namespace VirtualService.Net.Entities
 
     public class HttpRoute
     {
-        public string Name { get; set; } = string.Empty;
+        public string? Name { get; set; } = null;
 
         public int Order { get; set; } = 0;
 
@@ -43,7 +43,7 @@ namespace VirtualService.Net.Entities
 
     public class HttpMatchRequest
     {
-        public string Name { get; set; } = string.Empty;
+        public string? Name { get; set; } = null;
 
         public StringMatch Uri { get; set; } = new StringMatch();
 
