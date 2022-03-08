@@ -68,12 +68,14 @@ namespace VirtualService.Net.Controllers
             {
                 var http = new Http
                 {
+                    Name = specHttp.Name,
                     Match = new List<Match>(),
                     Route = new List<Route>()
                 };
 
                 var match = new Match
                 {
+                    Name = specHttp.Match.Name,
                     Uri = StringMatchToDic(specHttp.Match.Uri)
                 };
 
@@ -101,6 +103,10 @@ namespace VirtualService.Net.Controllers
 
                 virtualService.Spec.Http.Add(http);
             }
+
+            var yaml = VirtualServiceToYaml(virtualService);
+            _logger.LogInformation("Generated yaml:");
+            _logger.LogInformation(yaml);
 
             var k8sConfig = KubernetesClientConfiguration.InClusterConfig();
             IKubernetes client = new Kubernetes(k8sConfig);
