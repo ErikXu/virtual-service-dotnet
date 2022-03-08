@@ -34,6 +34,8 @@ namespace VirtualService.Net.Entities
     {
         public string? Name { get; set; } = null;
 
+        [RangeMinimum(ExclusiveMinimum = true, Minimum = 0)]
+        [RangeMaximum(ExclusiveMaximum = true, Maximum = 9999)]
         public int Order { get; set; } = 0;
 
         public HttpMatchRequest Match { get; set; } = new HttpMatchRequest();
