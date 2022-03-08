@@ -1,32 +1,32 @@
 apiVersion: extension.networking.istio.io/v1
 kind: VirtualServiceConfig
 metadata:
-  name: foo
+  name: multiple-v1
 spec:
   virtualServiceName: multiple
   host: multiple.example.com
   http:
-  - name: foo
+  - name: v1
     match:
       uri:
-        prefix: /foo
+        prefix: /v1
     route:
       host: multiple
-      subset: latest
+      subset: v1
 
 ---
 apiVersion: extension.networking.istio.io/v1
 kind: VirtualServiceConfig
 metadata:
-  name: baz
+  name: multiple-v2
 spec:
   virtualServiceName: multiple
   host: multiple.example.com
   http:
-  - name: baz
+  - name: v2
     match:
       uri:
-        prefix: /baz
+        prefix: /v2
     route:
       host: multiple
-      subset: latest
+      subset: v2
