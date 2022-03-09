@@ -42,7 +42,6 @@ metadata:
   name: header-dr-b
 spec:
   virtualServiceName: header-dr
-  virtualServiceName: header-dr
   # host: header-dr.example.com
   http:
   - name: header-b
