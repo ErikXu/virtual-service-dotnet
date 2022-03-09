@@ -22,7 +22,8 @@ metadata:
   name: header-svc-a
 spec:
   virtualServiceName: header-svc
-  host: header-svc.example.com
+  # host: header-svc.example.com
+  host: header-svc
   http:
   - name: header-a
     match:
@@ -42,7 +43,8 @@ metadata:
   name: header-svc-b
 spec:
   virtualServiceName: header-svc
-  host: header-svc.example.com
+  # host: header-svc.example.com
+  host: header-svc
   http:
   - name: header-b
     match:
