@@ -22,7 +22,8 @@ metadata:
   name: multiple-v2
 spec:
   virtualServiceName: multiple
-  host: multiple.example.com
+  # host: multiple.example.com
+  host: multiple
   http:
   - name: v2
     match:
