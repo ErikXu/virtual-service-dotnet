@@ -36,5 +36,13 @@ An operator to deal with the priority of istio virtual service by watching the v
 
 ## Examples
 
-Please enter the [example](example) directory, and using `kubectl apply -f xxx.yaml` to easily start an example. And you can use `kubectl delete -f xxx.yaml` to cleanup the example.
+- Enter the [example](example) directory
+
+- Using `kubectl apply -f xxx.yaml` to easily start an example
+
+- Using `kubectl get vs xxx -o yaml` to see the generated virtual service
+
+- Using `kubectl get vsc` to see the virtual service config(s)
+
+- Using `kubectl delete -f xxx.yaml` to cleanup the example
 
