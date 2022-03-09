@@ -18,7 +18,7 @@ metadata:
   uid: 674bdbe3-fdf6-4d4c-9a36-9727dfe419aa
 spec:
   hosts:
-  - multiple.example.com
+  - multiple
   http:
   - match:
     - uri:
