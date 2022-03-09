@@ -46,3 +46,6 @@ An operator to deal with the priority of istio virtual service by watching the v
 
 - Using `kubectl delete -f xxx.yaml` to cleanup the example
 
+## Cleanup
+
+You could enter the [src](src) directory and use [cleanup.sh](src/cleanup.sh) to cleanup the crd and operator.
