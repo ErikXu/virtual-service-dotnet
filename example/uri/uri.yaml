@@ -22,7 +22,8 @@ metadata:
   name: uri-long
 spec:
   virtualServiceName: uri
-  host: uri.example.com
+  # host: uri.example.com
+  host: uri
   http:
   - name: long
     match:
