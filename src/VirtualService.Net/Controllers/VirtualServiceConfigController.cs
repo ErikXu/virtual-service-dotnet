@@ -108,7 +108,7 @@ namespace VirtualService.Net.Controllers
 
             var specHttps = configs.SelectMany(n => n.Spec.Http)
                                    .OrderByDescending(n => n.Order)
-                                   .OrderByDescending(n => StringMatchToUri(n.Match.Uri).Length)
+                                   .ThenByDescending(n => StringMatchToUri(n.Match.Uri).Length)
                                    .ThenByDescending(n => n.Match.Headers.Count).ToList();
 
             foreach (var specHttp in specHttps)
