@@ -4,7 +4,8 @@ metadata:
   name: multiple-v1
 spec:
   virtualServiceName: multiple
-  host: multiple.example.com
+  # host: multiple.example.com
+  host: multiple
   http:
   - name: v1
     match:

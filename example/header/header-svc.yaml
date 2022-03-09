@@ -4,7 +4,8 @@ metadata:
   name: header-svc
 spec:
   virtualServiceName: header-svc
-  host: header-svc.example.com
+  # host: header-svc.example.com
+  host: header-svc
   http:
   - name: header-svc
     match:

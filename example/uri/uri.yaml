@@ -4,7 +4,8 @@ metadata:
   name: uri-short
 spec:
   virtualServiceName: uri
-  host: uri.example.com
+  # host: uri.example.com
+  host: uri
   http:
   - name: short
     match:

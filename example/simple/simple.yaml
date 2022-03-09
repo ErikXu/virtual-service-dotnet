@@ -4,7 +4,8 @@ metadata:
   name: simple
 spec:
   virtualServiceName: simple
-  host: simple.example.com
+  # host: simple.example.com
+  host: simple
   http:
   - name: simple
     match:
