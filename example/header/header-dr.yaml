@@ -23,6 +23,7 @@ metadata:
 spec:
   virtualServiceName: header-dr
   # host: header-dr.example.com
+  host: header-dr  
   http:
   - name: header-a
     match:
@@ -43,6 +44,7 @@ metadata:
 spec:
   virtualServiceName: header-dr
   # host: header-dr.example.com
+  host: header-dr  
   http:
   - name: header-b
     match:
