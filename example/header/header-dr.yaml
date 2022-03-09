@@ -7,7 +7,7 @@ spec:
   # host: header-dr.example.com
   host: header-dr
   http:
-  - name: header-base
+  - name: header-dr
     match:
       uri:
         prefix: /
@@ -22,7 +22,7 @@ metadata:
   name: header-dr-a
 spec:
   virtualServiceName: header-dr
-  host: header-dr.example.com
+  # host: header-dr.example.com
   http:
   - name: header-a
     match:
@@ -42,7 +42,8 @@ metadata:
   name: header-dr-b
 spec:
   virtualServiceName: header-dr
-  host: header-dr.example.com
+  virtualServiceName: header-dr
+  # host: header-dr.example.com
   http:
   - name: header-b
     match:
@@ -59,7 +60,7 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: header-dr-base
+  name: header-dr
 spec:
   host: header-dr
   trafficPolicy:
@@ -134,7 +135,7 @@ metadata:
   labels:
     app: header-dr
     version: base
-  name: header-dr-base
+  name: header-dr
 spec:
   replicas: 1
   selector:
